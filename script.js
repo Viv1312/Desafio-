@@ -10,19 +10,15 @@ let continuarCompra = "si";
 
 let ticket = {
   id: 0,
-  tipo: " ",
-  precio: 0, 
-}; 
+  tipo: "",
+  precio: 0,
+};
 
 let resumen = {
- cantidadTotal: 0,
- precioTotal:0,
- tickets: [],
-}
-
-let tickets = [];
- 
-
+  cantidadTotal: 0,
+  precioTotal: 0,
+  tickets: [],
+};
 
 function calcularPrecioEntrada(tipoEntrada, metodo) {
   let precioFinal = 0;
@@ -53,13 +49,33 @@ function calcularPrecioEntrada(tipoEntrada, metodo) {
   return precioFinal;
 }
 
-while (continuarCompra == "si") {
-  alert("Bienvenido a TuEntrada");
-  alert("Entradas disponibles: \n ENTRADAS A: Campo \n ENTRADAS B: CampoVIP");
+function calcularPrecioTotalEntradas(tickets) {
+  //crear variable total inicializada 0
+  var precioTotal = 0;
 
-  let tipoEntrada = prompt("Elegi un sector: \n A \n B").toLowerCase();
+  //recorrer la lista de tickets y por cada iteración, acumular el precio de ese ticket en la variable total
+  for (var i = 0; i < tickets.length; i++) {
+    precioTotal += tickets[i].precio;
+  }
 
-  while (tipoEntrada != "a" && tipoEntrada != "b") {
+  // devolver la variable total
+  return precioTotal;
+}
+
+let idTicket = 0;
+
+alert("Bienvenido a TuEntrada");
+
+while (continuarCompra.toLocaleLowerCase() == "si") {
+  idTicket++;
+
+  ticket = {};
+
+  ticket.id = idTicket;
+
+  let tipoEntrada = prompt("Entradas disponibles: \n A: Campo \n B: VIP").toLowerCase();
+
+  while (tipoEntrada.toLowerCase() != "a" && tipoEntrada.toLowerCase() != "b") {
     alert("Tipo de entrada inexistente. Por favor ingrese una entrada válida");
 
     tipoEntrada = prompt("Elegi un sector: \n A \n B").toLowerCase();
@@ -67,31 +83,31 @@ while (continuarCompra == "si") {
 
   ticket.tipo = tipoEntrada;
 
-  
-
-  let metodoPago = prompt(
-    "Elegi el metodo de pago: \n 1 - Efectivo\n  2 - Tarjeta"
-  );
+  let metodoPago = prompt("Elegi el metodo de pago: \n 1 - Efectivo\n  2 - Tarjeta");
 
   while (metodoPago != 1 && metodoPago != 2) {
     alert("Metodo de pago inexistente. Ingrese un número válido");
 
-    metodoPago = parseInt(
-      prompt("Elegi el metodo de pago: \n 1 - Efectivo \n  2 - Tarjeta")
-    );
+    metodoPago = parseInt(prompt("Elegi el metodo de pago: \n 1 - Efectivo \n  2 - Tarjeta"));
   }
 
-  let precioFinal = calcularPrecioEntrada(tipoEntrada, metodoPago);
+  let precioCalculado = calcularPrecioEntrada(tipoEntrada, metodoPago);
 
-  ticket.precio = precioFinal;
-  alert("El valor de tu entrada es:" + precioFinal);
+  ticket.precio = precioCalculado;
 
-  continuarCompra = prompt(
-    "Queres comprar otra entrada? \n - Si \n - No"
-  ).toLowerCase();
+  //guardar el objeto ticket en la lista de tickets
+  resumen.tickets.push(ticket);
 
-
+  continuarCompra = prompt("Queres comprar otra entrada? \n - Si \n - No").toLowerCase();
 }
-     alert("Gracias por su compra! ");
 
-   console.log (resumenCompra =(precioFinal));
+//recorrer la lista de tickets y calcular el precio total de tickets para ponerlo en la propiedad precioTotal del objeto resumen
+resumen.precioTotal = calcularPrecioTotalEntradas(resumen.tickets);
+
+//contar el largo de la lista tickets para ponerlo en la propiedad 'cantidadTotal' del objeto resumen
+resumen.cantidadTotal = resumen.tickets.length; 
+
+//Mostrar el objeto resumen en un alert con todo el detalle del objeto (usar saltos de linea)
+alert("Resumen de tu compra: \n Cantidad de entradas : " + resumen.cantidadTotal + "\n Precio Total: $" + resumen.precioTotal );
+
+alert("Gracias por su compra! ");
